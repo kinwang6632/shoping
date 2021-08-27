@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import products from '../product/product'
-
+import store from '../store/index.js'
 const routes = [
   {
     path: '/',
@@ -25,6 +25,9 @@ const router = createRouter({
 router.beforeEach(to => {
   console.log(to)
   console.log(products);
+  
+  store.commit('getAllProducts',products)
+  console.log(store.state.products)
 })
 
 export default router
