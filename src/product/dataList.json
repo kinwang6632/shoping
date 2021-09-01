@@ -1,0 +1,18 @@
+{
+    "dataList":[
+        {
+            "imgPath":"images.jpg",
+            "model":"自制型號1",
+            "description":"包含GPS,照像功能 畫素1800萬",
+            "price":29000.00,
+            "maxQuantity":99
+        },
+        {
+            "imgPath":"images2.jpg",
+            "model":"自制型號2",
+            "description":"包含GPS,照像功能2 畫素2000萬",
+            "price":18990.00,
+            "maxQuantity":80
+        }
+    ]
+}

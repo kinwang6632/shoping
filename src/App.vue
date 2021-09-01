@@ -1,20 +1,5 @@
 <template>
-  <div id="nav">
-    <!-- <nav class="navbar navbar-expand-sm bg-secondary navbar-dark">
-      <div class="collapse navbar-collapse" id="navbarText">
-        <ul class="navbar-nav mr-auto">
-          <router-link
-            v-for="(page, index) in pages"
-            :to="page.path"
-            :key="index"
-          >
-            <li class="nav-item">
-              <a class="nav-link" href="#">{{ page.name }}</a>
-            </li>
-          </router-link>
-        </ul>
-      </div>
-    </nav> -->
+  <div id="nav">   
     <nav class="navbar navbar-expand-sm bg-secondary navbar-dark">
       <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav mr-auto">

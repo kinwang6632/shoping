@@ -6,5 +6,15 @@ import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-
-createApp(App).use(store).use(router).mount('#app')
+const app =  createApp(App);
+app.use(store);
+app.use(router);
+app.directive('quantity', {
+    // When the bound element is mounted into the DOM...
+    mounted(el,binding) {
+      // Focus the element
+      el.value = binding.value
+    }
+  })
+app.mount('#app');
+// createApp(App).use(store).use(router).mount('#app')
