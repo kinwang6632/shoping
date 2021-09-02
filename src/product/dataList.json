@@ -13,6 +13,27 @@
             "description":"包含GPS,照像功能2 畫素2000萬",
             "price":18990.00,
             "maxQuantity":80
+        },
+        {
+            "imgPath":"images3.jpg",
+            "model":"自制型號3",
+            "description":"包含GPS,照像功能2 畫素800萬",
+            "price":3000.00,
+            "maxQuantity":5
+        },
+        {
+            "imgPath":"images4.jpg",
+            "model":"自制型號4",
+            "description":"包含GPS,照像功能2 畫素1800萬",
+            "price":13000.00,
+            "maxQuantity":8
+        },
+        {
+            "imgPath":"mobile-phone.jpg",
+            "model":"手錶",
+            "description":"包含GPS,照像功能2 畫素1800萬",
+            "price":8000.00,
+            "maxQuantity":2
         }
     ]
 }

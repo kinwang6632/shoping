@@ -77,21 +77,23 @@
           >
             <div class="input-group">
               <button
-                class="btn btn-outline-secondary"
+                class="btn btn-danger"
                 type="button"
-                
+                :disabled="dataQuantity[index] === 0 || !dataQuantity[index]"
+                @click="calQuantity(index,0,'-')"
               >
                 -
               </button>
               <input
                 class="form-control text-center bg-white"
                 disabled="disabled"
-                value="0"
+                :value="dataQuantity[index]? dataQuantity[index]:0"
               />
               <button
-                class="btn btn-outline-secondary"
+                class="btn  btn-primary text-white"
                 type="button"
-                @click="addQuantityh(0,data.maxQuantity)"
+                :disabled="dataQuantity[index] >= data.maxQuantity "
+                @click="calQuantity(index,data.maxQuantity,'+')"
               >
                 +
               </button>
@@ -106,7 +108,7 @@
             />
           </div>
           <div class="col d-flex justify-content-center align-items-center">
-            <button type="button" class="btn btn-danger" style="width: 80px">
+            <button type="button" @click="orderClick(index)" class="btn btn-danger" :disabled="!dataQuantity[index] || dataQuantity[index] === 0" style="width: 80px">
               訂購
             </button>
           </div>
@@ -122,7 +124,7 @@ export default {
     return {
       dtnumber: 1,
       dataList: this.$store.state.products.dataList,
-      imgp: require("../jpg/images.jpg"),
+      dataQuantity: [],
     };
   },
   
@@ -130,10 +132,23 @@ export default {
     getImage(path) {
       return path;
     },
-    addQuantityh(value,max) {
-      if(value<max) {
-        return value+=1
+    calQuantity(index,max,flag) {
+      if (!this.dataQuantity[index]) {this.dataQuantity[index] = 0}
+      if (flag === '+') {        
+        if(this.dataQuantity[index]<max) {
+          this.dataQuantity[index] +=1
+        }
+      } else {
+        if (this.dataQuantity[index] > max) {
+          this.dataQuantity[index] -=1
+        }
       }
+    },
+    orderClick(index) {
+      let q = 0;
+      q = this.dataList[index].maxQuantity - this.dataQuantity[index]
+      this.dataList[index].maxQuantity = q
+      this.dataQuantity[index] = 0
     }
   },
   //   getImage(path) {
