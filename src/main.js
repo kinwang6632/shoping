@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 const app =  createApp(App);
+//app.prototype.$OK = false
 app.use(store);
 app.use(router);
 app.directive('quantity', {
@@ -16,5 +17,6 @@ app.directive('quantity', {
       el.value = binding.value
     }
   })
+
 app.mount('#app');
 // createApp(App).use(store).use(router).mount('#app')

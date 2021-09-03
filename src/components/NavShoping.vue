@@ -125,6 +125,7 @@ export default {
       dtnumber: 1,
       dataList: this.$store.state.products.dataList,
       dataQuantity: [],
+      
     };
   },
   
@@ -160,7 +161,9 @@ export default {
 
   //   }
   // },
-  mounted() {},
+  mounted() {
+    
+  },
 };
 </script>
 

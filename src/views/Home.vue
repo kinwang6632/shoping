@@ -18,12 +18,16 @@ export default {
   components: {
     NavShoping,
   },
+  inject: ['user'],
   data() {
     return {
       msg: "ABC",
     };
   },
-  mounted() {},
+  mounted() {
+    //console.log(this.user)
+    this.user = 'AAA'
+  },
   unmounted() {},
 };
 </script>
