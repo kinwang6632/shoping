@@ -27,6 +27,7 @@ export default {
   mounted() {
     //console.log(this.user)
     this.user = 'AAA'
+    this.$emit("update",true)
   },
   unmounted() {},
 };

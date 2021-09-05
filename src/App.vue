@@ -61,7 +61,8 @@
       <router-view />
     </div>
     <div
-      v-if="!props.loadDataOK"
+      v-if="!isLoadDataOK"
+      @update="chgDataOK"
       class="
         shadow-lg
         p-3
@@ -90,37 +91,46 @@
   </div>
 </template>
 <script>
+import { getCurrentInstance,computed,ref } from "vue";
+import {useStore} from "vuex";
 export default {
-  props: {
-    loadDataOK: {
-      type: Boolean,
-      require: true,
-      default: false,
-    },
-  },
   
-  setup(props) {
-    let pages = [
-      {
+  
+  setup() {
+    const pages = ref([])
+    const store = useStore();
+    pages.value.push({
         path: "/",
         name: "產品資料",
       },
       {
         path: "/about",
         name: "About",
-      },
-    ];
-
-    return { pages, props };
+      })
+    
+    const instance = getCurrentInstance()
+    let isLoadDataOK = computed(()=>{
+      return store.state.isLoadDataOK
+    })
+    //console.log('isOK:'+ instance.appContext.app.config.globalProperties.isOK)
+    
+    
+    return { pages,instance,isLoadDataOK };
   },
   methods: {
     jump() {
       this.$router.push({ path: "/about" });
     },
+    chgDataOK(b) {
+      console.log("b=" + b)
+    
+    }
   },
   mounted() {
-    console.log(`this user = ${this.user}`);
+    //console.log(`this user = ${this.isOK}`);
+    //this.OK = this.isOK;
   },
+  
 };
 </script>
 

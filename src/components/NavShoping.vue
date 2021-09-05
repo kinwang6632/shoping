@@ -119,13 +119,15 @@
 </template>
 
 <script>
+import { inject } from "vue";
+
 export default {
   data() {
     return {
       dtnumber: 1,
       dataList: this.$store.state.products.dataList,
       dataQuantity: [],
-      
+      name : null,
     };
   },
   
@@ -162,6 +164,10 @@ export default {
   //   }
   // },
   mounted() {
+    this.name = inject("parent");    
+    setTimeout(() => {
+      this.$store.commit("setLoadDataOK",true)  
+    }, 3000);
     
   },
 };

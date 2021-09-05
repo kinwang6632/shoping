@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import store from '../store/index.js'
 import dataList from '../product/dataList.json'
+
 const routes = [
   {
     path: '/',
@@ -24,8 +25,11 @@ const router = createRouter({
 })
 router.beforeEach(to => {  
   console.log(to)
+  store.state.isLoadDataOK = false
   store.commit('getAllProducts',dataList)
-
+  
+  
+  
 })
 
 export default router
