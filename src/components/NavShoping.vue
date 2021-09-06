@@ -120,10 +120,12 @@
 </template>
 
 <script>
-import { inject } from "vue";
+
+
 //import { Store } from 'vuex';
 
 export default {
+  
   props:['sendDataToChild'],
   data() {
     return {
@@ -178,7 +180,7 @@ export default {
   },
  
   mounted() {
-    this.name = inject("parent");    
+    
     // this.$store.dispatch('getProductData')
     //   .then(
     //      () => {

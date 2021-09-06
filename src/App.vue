@@ -92,7 +92,7 @@
   </div>
 </template>
 <script>
-import { getCurrentInstance,computed,ref } from "vue";
+import { getCurrentInstance,computed,ref, provide } from "vue";
 import {useStore} from "vuex";
 export default {
   props:{
@@ -103,6 +103,8 @@ export default {
     const pages = ref([])
     const isOK = ref(true);
     const store = useStore();
+    provide('currentOrder', store.state.currentOrder)
+
     let title1 = ref(props);
     title1.value = "my title"
     pages.value.push({
@@ -130,9 +132,10 @@ export default {
     
     return { pages,instance,isLoadDataOK,title1,isOK,getOrderNum };
   },
+  
   methods: {
     jump() {
-      this.$router.push({ path: "/about" });
+      this.$router.push({ path: "/order" });
     },
     chgDataOK(b) {
       console.log("b=" + b)
