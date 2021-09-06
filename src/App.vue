@@ -32,7 +32,7 @@
           >
             購物車
 
-            <span
+            <span 
               class="
                 position-absolute
                 top-0
@@ -43,8 +43,9 @@
                 bg-danger
                 visible
               "
+              v-if="getOrderNum > 0"
             >
-              0
+              {{getOrderNum}}
               <span class="visually-hidden">unread messages</span>
             </span>
           </button>
@@ -94,11 +95,16 @@
 import { getCurrentInstance,computed,ref } from "vue";
 import {useStore} from "vuex";
 export default {
+  props:{
+    title:String
+  },
   
-  
-  setup() {
+  setup(props) {
     const pages = ref([])
+    const isOK = ref(true);
     const store = useStore();
+    let title1 = ref(props);
+    title1.value = "my title"
     pages.value.push({
         path: "/",
         name: "產品資料",
@@ -112,10 +118,17 @@ export default {
     let isLoadDataOK = computed(()=>{
       return store.state.isLoadDataOK
     })
+    let getOrderNum = computed(()=>{
+      let n = 0;
+      store.state.currentOrder.forEach(element => {
+        n+=element.orderNum
+      });
+      return n
+    })
     //console.log('isOK:'+ instance.appContext.app.config.globalProperties.isOK)
     
     
-    return { pages,instance,isLoadDataOK };
+    return { pages,instance,isLoadDataOK,title1,isOK,getOrderNum };
   },
   methods: {
     jump() {

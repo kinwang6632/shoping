@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="home">
-      <NavShoping></NavShoping>
+      <NavShoping :sendDataToChild="true" @updToParent="updateSelf"></NavShoping>
     </div>
 
     <!-- <div class="z-index-2 bg-danger position-absolute">.z-index-2</div> -->
@@ -18,16 +18,22 @@ export default {
   components: {
     NavShoping,
   },
-  inject: ['user'],
+  inject: ['user'],  
   data() {
     return {
-      msg: "ABC",
+      msg : true,
+      whichIndex:0
     };
   },
+  methods:{
+    updateSelf(event,index){
+      console.log('updateSelf', event)
+      this.whichIndex = index      
+    } 
+  },
   mounted() {
-    //console.log(this.user)
-    this.user = 'AAA'
-    this.$emit("update",true)
+    
+    
   },
   unmounted() {},
 };

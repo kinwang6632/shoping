@@ -32,6 +32,7 @@
               :src="require(`../jpg/${data.imgPath}`)"
               class="rounded zoom"
               style="height: 85px"
+              @click="imgClick($event,index)"
             />
           </div>
           <div
@@ -120,20 +121,27 @@
 
 <script>
 import { inject } from "vue";
+//import { Store } from 'vuex';
 
 export default {
+  props:['sendDataToChild'],
   data() {
     return {
       dtnumber: 1,
-      dataList: this.$store.state.products.dataList,
+      dataList: null,
       dataQuantity: [],
       name : null,
+      getPropFromParent:this.sendDataToChild,
+
     };
   },
   
   methods: {
     getImage(path) {
       return path;
+    },
+    updToParent(e,val) {      
+      this.$emit('updToParent',e,val)
     },
     calQuantity(index,max,flag) {
       if (!this.dataQuantity[index]) {this.dataQuantity[index] = 0}
@@ -148,27 +156,47 @@ export default {
       }
     },
     orderClick(index) {
+      
       let q = 0;
       q = this.dataList[index].maxQuantity - this.dataQuantity[index]
       this.dataList[index].maxQuantity = q
+      
+      let payload = {
+        model: this.dataList[index].model,
+        orderNum: this.dataQuantity[index]
+      }
       this.dataQuantity[index] = 0
+      
+      this.$store.commit('setCurrentOrder',payload)
+      console.log(this.$store.state.currentOrder)
+    },
+    imgClick(event,index){
+      //alert(`imgclick = ${index}`)
+      
+      this.updToParent(event,index)
     }
   },
-  //   getImage(path) {
-  //   return require(path)
-  // },
-  // methods: {
-  //   getImg(path){
-  //     return require(path)
-
-  //   }
-  // },
+ 
   mounted() {
     this.name = inject("parent");    
-    setTimeout(() => {
-      this.$store.commit("setLoadDataOK",true)  
-    }, 3000);
-    
+    // this.$store.dispatch('getProductData')
+    //   .then(
+    //      () => {
+    //        console.log('Action OK')
+    //        this.dataList= this.$store.state.products.dataList
+    //        }
+    //   )
+    var getData = async () => {
+      try {
+        await this.$store.dispatch('getProductData')
+        this.dataList= this.$store.state.products.dataList
+      } catch (error) {
+         console.log(error)
+      }
+      
+    }
+    getData()
+        
   },
 };
 </script>
