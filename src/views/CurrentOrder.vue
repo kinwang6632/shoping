@@ -94,7 +94,7 @@
                   type="button"
                   class="btn-close btn-outline-light"
                   aria-label="Close"
-                  
+                  @click="deleteItem(data.model)"              
                 ></button>
               </div>
             </td>
@@ -105,9 +105,9 @@
             <td colspan="2" class="text-secondary" style="width: 50px">              
             </td>            
             <td  style="widht: 250px " class="text-secondary"></td>
-            <td scope="col" style="widht: 150px " class="text-danger">2000</td>
+            <td scope="col" style="widht: 150px " class="text-danger">{{totalProduct.price}}</td>
             <td scope="col" style="width: 250px" class="text-center text-danger">
-              80000
+              {{totalProduct.number}}
             </td>
             <td scope="col" class="text-center text-secondary" style="width: 200px">
             
@@ -131,15 +131,21 @@
 </template>
 
 <script>
-import { ref, onMounted, inject,  computed,  } from "vue";
+import {  onMounted, inject,  computed, watch, reactive,  } from "vue";
 import { useStore } from "vuex";
 export default {
   //inject: ["currentOrder"],
   setup() {
-    const msg = ref("ABC");
+    
     const store = useStore();
-    const ordProducts = inject("currentOrder");
-    const products = store.state.products;    
+    const origineProducts = inject("currentOrder");
+    let ordProducts = reactive( origineProducts);
+    
+    const products = store.state.products;
+    const totalProduct = reactive({
+      price:0,
+      number:0
+    }) ;
     const showOrdProducts =  computed(() => {      
       let o = [];
       if (!ordProducts) { return o; }      
@@ -162,15 +168,39 @@ export default {
       }
       return o;
     });
+    const getTotal = function() {
+      totalProduct.price = 0;
+      totalProduct.number = 0;
+      if(products.dataList) {
+        products.dataList.forEach((value) => {
+          let index = ordProducts.findIndex(element => element.model == value.model)
+          if(index >= 0) {
+            totalProduct.price += value.price  
+            totalProduct.number += ordProducts[index].orderNum
+          }
+        })
+      }
+    }
+    watch(getTotal)
     
-    
-
+    function deleteItem (model) {
+      
+      
+      var newProducts = ordProducts.filter(element =>  element.model != model );
+      
+      ordProducts.length = 0;
+      ordProducts.push(...newProducts)
+      //ordProducts = []
+      
+      //console.log(ordProducts.value)
+      
+    }
     
     onMounted(() => {
       store.commit("setLoadDataOK", true);
     });
 
-    return { msg, ordProducts,showOrdProducts };
+    return {  ordProducts,showOrdProducts,totalProduct,deleteItem,getTotal };
   },
 
   beforeRouteEnter(to, from, next) {
