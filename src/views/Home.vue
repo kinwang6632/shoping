@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="home">
+    <div class="h-100 w-100 container-fluid">
       <NavShoping :sendDataToChild="true" @updToParent="updateSelf"></NavShoping>
     </div>
 
@@ -12,7 +12,7 @@
 // @ is an alias to /src
 //import Nav from '@/components/Nav.vue'
 //import Nav from '../components/Nav.vue'
-import NavShoping from "../components/NavShoping.vue";
+import NavShoping from "./NavShoping.vue";
 export default {
   name: "Home",
   components: {

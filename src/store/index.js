@@ -14,8 +14,7 @@ export default createStore({
       state.isLoadDataOK = payload
     },
     setCurrentOrder(state,payload) {
-      let index = state.currentOrder.findIndex((element) => {
-          //console.log(element)
+      let index = state.currentOrder.findIndex((element) => {          
           return element.model === payload.model
       })
       

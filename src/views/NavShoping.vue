@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container-fluid p-5">
+    <div class="container-fluid p-3">
       <div class="container-fluid">
         <div class="row">
           <div class="col-sm-1 d-flex justify-content-center"></div>
@@ -13,11 +13,11 @@
           <div class="col-sm-1 d-flex justify-content-center text-danger">
             價格
           </div>
-          <div class="col-sm-2 d-flex justify-content-center text-danger">
+          <div class="col d-flex justify-content-center text-danger">
             購買數量
           </div>
           <div class="col d-flex justify-content-center text-danger">庫存</div>
-          <div class="col d-flex justify-content-center text-danger"></div>
+          <div class="col-sm-1 d-flex justify-content-center text-danger"></div>
         </div>
       </div>
       <div
@@ -44,7 +44,12 @@
               justify-content-center
             "
           >
-            <div class="overflow-auto">{{ data.model }}</div>
+            <div class="overflow-auto">              
+              <span v-on:click="modelClick(data.model)">
+                {{ data.model }}
+              </span>
+              
+            </div>
           </div>
           <div
             class="
@@ -72,15 +77,16 @@
           >
             {{ data.price }}
           </div>
+          <!-- price button -->
           <div
-            class="col-sm-2 d-flex align-items-center text-center"
+            class="col d-flex align-items-center text-center"
             style="text-align: right"
           >
             <div class="input-group">
               <button
                 class="btn btn-danger"
                 type="button"
-                :disabled="dataQuantity[index] === 0 || !dataQuantity[index]"
+                :disabled="dataQuantity[index] === 0 || !dataQuantity[index] || data.maxQuantity === 0"
                 @click="calQuantity(index,0,'-')"
               >
                 -
@@ -93,22 +99,23 @@
               <button
                 class="btn  btn-primary text-white"
                 type="button"
-                :disabled="dataQuantity[index] >= data.maxQuantity "
+                :disabled="dataQuantity[index] >= data.maxQuantity || data.maxQuantity === 0 "
                 @click="calQuantity(index,data.maxQuantity,'+')"
               >
                 +
               </button>
             </div>
           </div>
+          <!-- price button -->
           <div class="col d-flex justify-content-center align-items-center">
             <input
               type="number"
               class="form-control text-center bg-white"
               disabled="disabled"
-              :value="data.maxQuantity"
+              v-model="data.maxQuantity"
             />
           </div>
-          <div class="col d-flex justify-content-center align-items-center">
+          <div class="col-sm-1 d-flex justify-content-center align-items-center">
             <button type="button" @click="orderClick(index)" class="btn btn-danger" :disabled="!dataQuantity[index] || dataQuantity[index] === 0" style="width: 80px">
               訂購
             </button>
@@ -156,6 +163,9 @@ export default {
           this.dataQuantity[index] -=1
         }
       }
+    },
+    modelClick(model) {
+        alert(model);
     },
     orderClick(index) {
       

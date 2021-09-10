@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div  >
     <div
-      id="nav"
+      id="nav"      
       class="float-start position-absolute w-100 h-100"
       style="z-index: 1"
     >
-      <nav class="navbar navbar-expand-sm bg-secondary navbar-dark">
+      <nav class="navbar navbar-expand-sm bg-secondary navbar-dark  ">
         <div class="collapse navbar-collapse" id="navbarText">
           <ul class="navbar-nav mr-auto">
             <router-link
