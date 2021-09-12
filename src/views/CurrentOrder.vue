@@ -168,11 +168,11 @@ export default {
       }
       return o;
     });
-    const getTotal = function() {
+    const getTotal = async function() {
       totalProduct.price = 0;
       totalProduct.number = 0;
       if(products.dataList) {
-        products.dataList.forEach((value) => {
+       await products.dataList.forEach((value) => {
           let index = ordProducts.findIndex(element => element.model == value.model)
           if(index >= 0) {
             totalProduct.price += value.price  
