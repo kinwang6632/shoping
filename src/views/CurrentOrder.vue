@@ -162,8 +162,9 @@
 </template>
 
 <script>
-import { onMounted, inject, computed, watch, reactive } from "vue";
+import { onMounted, inject, computed, watch, reactive,  } from "vue";
 import { useStore } from "vuex";
+import  chgOrder  from '../watchChange'
 export default {
   //inject: ["currentOrder"],
   setup() {
@@ -171,7 +172,10 @@ export default {
     const origineProducts = inject("currentOrder");
     let ordProducts = reactive(origineProducts);
     
+    
     let products = store.state.products;
+    chgOrder.setProducts(products);
+    
     const totalProduct = reactive({
       price: 0,
       number: 0,
@@ -226,19 +230,8 @@ export default {
     };
 
     
-    watch(() => [...ordProducts],(newValue,oldValue) => {          
-      if (newValue.length === 0) {
-        oldValue.forEach((v) => {
-          const index = products.dataList.findIndex((element) => element.model = v.model)
-          console.log('index = ' + index)
-          console.log('index',index)
-          if (index >=0 ){
-            console.log(products.dataList[index].maxQuantity);
-            products.dataList[index].maxQuantity += v.orderNum;
-          }
-        })
-      }
-      
+    watch(() => [...ordProducts],(newValue,oldValue) => {  
+      chgOrder.getChange(newValue,oldValue)                   
     }); 
     watch(getTotal);
 
@@ -251,6 +244,7 @@ export default {
 
     onMounted(() => {
       store.commit("setLoadDataOK", true);
+      
     });
 
     return {
