@@ -164,17 +164,19 @@
 <script>
 import { onMounted, inject, computed, watch, reactive,  } from "vue";
 import { useStore } from "vuex";
-import  chgOrder  from '../watchChange'
+import  {getChange,inProducts}  from '../watchChange'
 export default {
   //inject: ["currentOrder"],
   setup() {
     const store = useStore();
     const origineProducts = inject("currentOrder");
     let ordProducts = reactive(origineProducts);
-    
+    inProducts = ordProducts;
     
     let products = store.state.products;
-    chgOrder.setProducts(products);
+    //inProducts = reactive(products);
+    //inProducts = reactive( products);
+    //chgDataFromJs.setProducts(products)    
     
     const totalProduct = reactive({
       price: 0,
@@ -231,7 +233,8 @@ export default {
 
     
     watch(() => [...ordProducts],(newValue,oldValue) => {  
-      chgOrder.getChange(newValue,oldValue)                   
+      //console.log('my o' ,chgDataFromJs)      
+      getChange(newValue,oldValue)                   
     }); 
     watch(getTotal);
 
