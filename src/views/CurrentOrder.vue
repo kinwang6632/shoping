@@ -170,10 +170,24 @@ export default {
   setup() {
     const store = useStore();
     const origineProducts = inject("currentOrder");
+  
     let ordProducts = reactive(origineProducts);
     // inProducts = ordProducts;
     
     let products = store.state.products;
+    let productsProxy = new Proxy(products,{
+        
+        get:(target) => {
+          const o = new Array();
+          
+          target.dataList.forEach((v,i) => {
+            o[i] = v.model;
+          });
+          console.log('my o is ',o);
+          return 'a';
+        }
+      });
+    
     //inProducts = reactive(products);
     //inProducts = reactive( products);
     //chgDataFromJs.setProducts(products)    
@@ -210,6 +224,7 @@ export default {
       if (index >= 0) {
         if (flag === "+") {
           ordProducts[index].orderNum += 1;
+          console.log(productsProxy.getDataByModel(model))
         } else {
           ordProducts[index].orderNum -= 1;
           
