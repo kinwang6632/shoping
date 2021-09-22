@@ -185,14 +185,10 @@ export default {
     
     function deleteItem (model) {
       
-      
-      var newProducts = ordProducts.filter(element =>  element.model != model );
-      
+      var newProducts = ordProducts.filter(element =>  element.model != model );      
       ordProducts.length = 0;
       ordProducts.push(...newProducts)
-      //ordProducts = []
       
-      //console.log(ordProducts.value)
       
     }
     
