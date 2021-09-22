@@ -164,14 +164,14 @@
 <script>
 import { onMounted, inject, computed, watch, reactive,  } from "vue";
 import { useStore } from "vuex";
-import  {getChange,inProducts}  from '../watchChange'
+import  {getChange}  from '../watchChange'
 export default {
   //inject: ["currentOrder"],
   setup() {
     const store = useStore();
     const origineProducts = inject("currentOrder");
     let ordProducts = reactive(origineProducts);
-    inProducts = ordProducts;
+    // inProducts = ordProducts;
     
     let products = store.state.products;
     //inProducts = reactive(products);
@@ -212,6 +212,7 @@ export default {
           ordProducts[index].orderNum += 1;
         } else {
           ordProducts[index].orderNum -= 1;
+          
         }
       }
     };
@@ -234,14 +235,24 @@ export default {
     
     watch(() => [...ordProducts],(newValue,oldValue) => {  
       //console.log('my o' ,chgDataFromJs)      
-      getChange(newValue,oldValue)                   
+       getChange(newValue,oldValue)                   
     }); 
     watch(getTotal);
 
     function deleteItem(model) {
-      var newProducts = ordProducts.filter((element) => element.model != model);
+      const findDeleteItem  = ordProducts.find((e) => e.model === model);
+      const findIndex = products.dataList.findIndex((e) => e.model === model);
+      if(findIndex >= 0) {
+        products.dataList[findIndex].maxQuantity += findDeleteItem.orderNum;
+      }
+
+      let newProducts = ordProducts.filter((element) => element.model != model);
+
+      
+
       ordProducts.length = 0;
       ordProducts.push(...newProducts);
+      
       
     }
 

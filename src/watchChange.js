@@ -6,8 +6,9 @@ function getProducts(){
     // const store = useStore();
     // products = store.state.products;
 } */
-export function getChange(newValue, oldValue) {    
-    
+export function getChange(newValue, oldValue) {  
+    console.log(newValue + oldValue);
+    /*
     if (newValue.length === 0) {
         console.log('products' ,inProducts)
         oldValue.forEach((v) => {
@@ -16,7 +17,7 @@ export function getChange(newValue, oldValue) {
                 inProducts.dataList[index].maxQuantity += v.orderNum;
             }
         })
-    }
+    } */
 }
 export function setProducts(value) {
     inProducts = value
