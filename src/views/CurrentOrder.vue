@@ -162,36 +162,43 @@
 </template>
 
 <script>
-import { onMounted, inject, computed, watch, reactive,  } from "vue";
+import { onMounted, inject, computed, watch, reactive } from "vue";
 import { useStore } from "vuex";
-import  {getChange}  from '../watchChange'
+import { getChange } from "../watchChange";
 export default {
   //inject: ["currentOrder"],
   setup() {
     const store = useStore();
     const origineProducts = inject("currentOrder");
-  
+
     let ordProducts = reactive(origineProducts);
     // inProducts = ordProducts;
-    
+
     let products = store.state.products;
-    let productsProxy = new Proxy(products,{
-        
-        get:(target) => {
-          const o = new Array();
-          
-          target.dataList.forEach((v,i) => {
-            o[i] = v.model;
-          });
-          console.log('my o is ',o);
-          return 'a';
+    const productsProxy = new Proxy(products, {
+      get: (target, prop) => {
+        const o1 = new Array();
+        target.dataList.forEach((v, i) => {
+          o1[i] = v.model;
+        });
+        if (prop === "increaseDataByModel") {
+          return (model) => {
+            const index = o1.indexOf(model);
+            target.dataList[index]["maxQuantity"] -= 1;
+          };
+        } else if (prop === "decreaseDataByModel") {
+          return (model) => {
+            const index = o1.indexOf(model);
+            target.dataList[index]["maxQuantity"] += 1;
+          };
         }
-      });
-    
+      },
+    });
+
     //inProducts = reactive(products);
     //inProducts = reactive( products);
-    //chgDataFromJs.setProducts(products)    
-    
+    //chgDataFromJs.setProducts(products)
+
     const totalProduct = reactive({
       price: 0,
       number: 0,
@@ -224,10 +231,10 @@ export default {
       if (index >= 0) {
         if (flag === "+") {
           ordProducts[index].orderNum += 1;
-          console.log(productsProxy.getDataByModel(model))
+          productsProxy.increaseDataByModel(model);
         } else {
           ordProducts[index].orderNum -= 1;
-          
+          productsProxy.decreaseDataByModel(model);
         }
       }
     };
@@ -247,35 +254,30 @@ export default {
       }
     };
 
-    
-
-    watch(() => [...ordProducts],(newValue,oldValue) => {  
-      //console.log('my o' ,chgDataFromJs)      
-       getChange(newValue,oldValue)                   
-    }); 
+    watch(
+      () => [...ordProducts],
+      (newValue, oldValue) => {
+        //console.log('my o' ,chgDataFromJs)
+        getChange(newValue, oldValue);
+      }
+    );
     watch(getTotal);
 
     function deleteItem(model) {
-      const findDeleteItem  = ordProducts.find((e) => e.model === model);
+      const findDeleteItem = ordProducts.find((e) => e.model === model);
       const findIndex = products.dataList.findIndex((e) => e.model === model);
-      if(findIndex >= 0) {
+      if (findIndex >= 0) {
         products.dataList[findIndex].maxQuantity += findDeleteItem.orderNum;
       }
 
       let newProducts = ordProducts.filter((element) => element.model != model);
 
-      
-
       ordProducts.length = 0;
       ordProducts.push(...newProducts);
-
-      
-      
     }
 
     onMounted(() => {
       store.commit("setLoadDataOK", true);
-      
     });
 
     return {
